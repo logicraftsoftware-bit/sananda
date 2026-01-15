@@ -2,6 +2,10 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './App.css';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginName, setLoginName] = useState('');
+  const [loginDOB, setLoginDOB] = useState('');
+  const [loginError, setLoginError] = useState('');
   const [currentBox, setCurrentBox] = useState(1);
   const [activeBox, setActiveBox] = useState(null);
   const [musicStarted, setMusicStarted] = useState(false);
@@ -141,13 +145,18 @@ function App() {
           <button className="next-btn" onClick={(e) => { e.stopPropagation(); closeBox(); }}>Continue</button>
         </div>
       );
-    } else if (num === 4) {
+    } else if (num === 2 || num === 4 || num === 9) {
+      let videoPath = '';
+      if (num === 2) videoPath = '/box/2.mp4';
+      if (num === 4) videoPath = '/box/4.mp4';
+      if (num === 9) videoPath = '/box/9.mp4';
+
       return (
         <div>
           <div>🎥 It's Your Video</div>
           <video
             ref={currentVideoRef}
-            src="/box/4.mp4"
+            src={videoPath}
             controls
             autoPlay
             onPlay={() => bgMusicRef.current && bgMusicRef.current.pause()}
@@ -167,6 +176,23 @@ function App() {
     }
   };
 
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (loginName.trim().toLowerCase() === 'sananda' && loginDOB === '20/01/1999') {
+      setIsLoggedIn(true);
+      setUsername(loginName);
+      localStorage.setItem("name", loginName);
+      setLoginError('');
+    } else {
+      setLoginError('Invalid credentials. Access denied!');
+      // Add some "hardcore" security measures
+      setTimeout(() => {
+        setLoginName('');
+        setLoginDOB('');
+      }, 1000);
+    }
+  };
+
   useEffect(() => {
     document.addEventListener("touchstart", handleTouchStart, { passive: false });
     document.addEventListener("touchmove", handleTouchMove, { passive: false });
@@ -178,6 +204,43 @@ function App() {
       document.removeEventListener("touchend", handleTouchEnd);
     };
   }, [handleTouchStart, handleTouchMove, handleTouchEnd]);
+
+  if (!isLoggedIn) {
+    return (
+      <div className="App login-screen">
+        <div className="login-container">
+          <h1 className="login-title">🎂 Birthday Surprise 🎂</h1>
+          <p className="login-subtitle">Enter your credentials to access the surprise</p>
+          <form onSubmit={handleLogin} className="login-form">
+            <div className="input-group">
+              <label htmlFor="name">Name:</label>
+              <input
+                type="text"
+                id="name"
+                value={loginName}
+                onChange={(e) => setLoginName(e.target.value)}
+                placeholder="Enter your name"
+                required
+              />
+            </div>
+            <div className="input-group">
+              <label htmlFor="dob">Date of Birth:</label>
+              <input
+                type="text"
+                id="dob"
+                value={loginDOB}
+                onChange={(e) => setLoginDOB(e.target.value)}
+                placeholder="DD/MM/YYYY"
+                required
+              />
+            </div>
+            {loginError && <div className="error-message">{loginError}</div>}
+            <button type="submit" className="login-btn">Access Surprise</button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="App" onClick={startMusic}>
