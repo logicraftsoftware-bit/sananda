@@ -240,6 +240,7 @@ html, body {
     z-index: 50;
     animation: fadeIn 0.3s ease;
     -webkit-animation: fadeIn 0.3s ease;
+    pointer-events: none;
 }
 
 .overlay.hidden {
