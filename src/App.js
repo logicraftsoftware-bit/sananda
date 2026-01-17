@@ -145,10 +145,11 @@ function App() {
           <button className="next-btn" onClick={(e) => { e.stopPropagation(); closeBox(); }}>Continue</button>
         </div>
       );
-    } else if (num === 2 || num === 4 || num === 9) {
+    } else if (num === 2 || num === 4 || num === 7 || num === 9) {
       let videoPath = '';
       if (num === 2) videoPath = '/box/2.mp4';
       if (num === 4) videoPath = '/box/4.mp4';
+      if (num === 7) videoPath = '/box/7.mp4';
       if (num === 9) videoPath = '/box/9.mp4';
 
       return (
