@@ -240,6 +240,12 @@ html, body {
     margin-bottom: 0.5rem;
     position: relative;
     z-index: 2;
+    pointer-events: none;
+}
+
+.overlay:not(.hidden) ~ .App h2,
+.overlay:not(.hidden) ~ .App p {
+    display: none;
 }
 
 .App p {
@@ -324,7 +330,7 @@ html, body {
     width: auto;
     height: auto;
     transform: scale(1);
-    z-index: 100;
+    z-index: 150;
     font-size: 1.2rem;
     flex-direction: column;
     padding: 2.5rem;
@@ -336,6 +342,7 @@ html, body {
     overflow-y: auto;
     align-items: center;
     color: #2d3748;
+    max-height: 90vh;
 }
 
 .box-content {
@@ -345,6 +352,7 @@ html, body {
     justify-content: center;
     width: 100%;
     height: 100%;
+    gap: 1.5rem;
 }
 
 .box.expand h3 {
@@ -428,8 +436,7 @@ html, body {
 .overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.35);
-    /* backdrop-filter: blur(8px); */
+    background: transparent;
     display: block;
     z-index: 50;
     animation: fadeIn 0.3s ease;
