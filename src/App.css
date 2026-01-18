@@ -434,13 +434,7 @@ html, body {
 
 /* Modern Overlay */
 .overlay {
-    position: fixed;
-    inset: 0;
-    background: transparent;
-    display: block;
-    z-index: 99;
-    animation: fadeIn 0.3s ease;
-    pointer-events: none;
+    display: none;
 }
 
 .overlay.hidden {
