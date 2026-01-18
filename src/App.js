@@ -132,11 +132,13 @@ function App() {
   };
 
   const renderBoxContent = (num) => {
-    if (num === 1 || num === 3 || num === 6) {
+    if (num === 1 || num === 3 || num === 5 || num === 6 || num === 8) {
       let imagePath = '';
       if (num === 1) imagePath = '/box/1.jpg';
       if (num === 3) imagePath = '/box/3.png';
+      if (num === 5) imagePath = '/box/5.jpg';
       if (num === 6) imagePath = '/box/6.jpg';
+      if (num === 8) imagePath = '/box/8.png';
 
       return (
         <div>
