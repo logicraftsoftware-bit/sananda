@@ -9,13 +9,14 @@ function App() {
   const [currentBox, setCurrentBox] = useState(1);
   const [activeBox, setActiveBox] = useState(null);
   const [musicStarted, setMusicStarted] = useState(false);
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState('Sananda');
   const [showOverlay, setShowOverlay] = useState(false);
   const [confettiElements, setConfettiElements] = useState([]);
+
   const bgMusicRef = useRef(null);
   const currentVideoRef = useRef(null);
 
-  // Pinch zoom state
+  // Pinch zoom states
   const [initialDistance, setInitialDistance] = useState(0);
   const [currentScale, setCurrentScale] = useState(1);
   const [translateX, setTranslateX] = useState(0);
@@ -38,7 +39,6 @@ function App() {
 
   const openBox = (num) => {
     if (num !== currentBox) return;
-
     startMusic();
     setActiveBox(num);
     setShowOverlay(true);
@@ -49,7 +49,7 @@ function App() {
     createConfetti();
 
     if (currentVideoRef.current && !currentVideoRef.current.ended) {
-      if (bgMusicRef.current) bgMusicRef.current.play();
+      bgMusicRef.current && bgMusicRef.current.play();
       currentVideoRef.current = null;
     }
 
@@ -68,18 +68,13 @@ function App() {
       });
     }
     setConfettiElements(newConfetti);
-
-    setTimeout(() => {
-      setConfettiElements([]);
-    }, 4000);
+    setTimeout(() => setConfettiElements([]), 4000);
   };
 
-  const toggleZoom = (event) => {
-    event.stopPropagation();
-    event.target.classList.toggle('zoomed');
-  };
+  // ---------- PINCH ZOOM ----------
+  const getDistance = (t1, t2) =>
+    Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
 
-  // Touch event handlers for pinch zoom
   const handleTouchStart = useCallback((e) => {
     if (!e.target.classList.contains("pinch-img")) return;
     setImgElement(e.target);
@@ -99,22 +94,19 @@ function App() {
 
     if (e.touches.length === 2) {
       e.preventDefault();
-      let newDistance = getDistance(e.touches[0], e.touches[1]);
-      let scaleChange = newDistance / initialDistance;
-      let newScale = Math.min(Math.max(scaleChange, 1), 3);
+      const newDistance = getDistance(e.touches[0], e.touches[1]);
+      const newScale = Math.min(Math.max(newDistance / initialDistance, 1), 3);
       setCurrentScale(newScale);
-
       imgElement.style.transform = `translate(${translateX}px, ${translateY}px) scale(${newScale})`;
     }
 
     if (e.touches.length === 1 && currentScale > 1) {
       e.preventDefault();
-      let newTranslateX = e.touches[0].clientX - startX;
-      let newTranslateY = e.touches[0].clientY - startY;
-      setTranslateX(newTranslateX);
-      setTranslateY(newTranslateY);
-
-      imgElement.style.transform = `translate(${newTranslateX}px, ${newTranslateY}px) scale(${currentScale})`;
+      const x = e.touches[0].clientX - startX;
+      const y = e.touches[0].clientY - startY;
+      setTranslateX(x);
+      setTranslateY(y);
+      imgElement.style.transform = `translate(${x}px, ${y}px) scale(${currentScale})`;
     }
   }, [imgElement, initialDistance, translateX, translateY, currentScale, startX, startY]);
 
@@ -126,75 +118,6 @@ function App() {
     }
     setImgElement(null);
   }, [currentScale]);
-
-  const getDistance = (t1, t2) => {
-    return Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
-  };
-
-  const renderBoxContent = (num) => {
-    if (num === 1 || num === 3 || num === 5 || num === 6 || num === 8) {
-      let imagePath = '';
-      if (num === 1) imagePath = '/box/1.jpg';
-      if (num === 3) imagePath = '/box/3.png';
-      if (num === 5) imagePath = '/box/5.jpg';
-      if (num === 6) imagePath = '/box/6.jpg';
-      if (num === 8) imagePath = '/box/8.png';
-
-      return (
-        <div>
-          <div>Pupu Mota Kutu Lutu Happy Birthday 🎁</div>
-          <img src={imagePath} className="pinch-img" onClick={toggleZoom} alt={`Box ${num}`} />
-          <button className="next-btn" onClick={(e) => { e.stopPropagation(); closeBox(); }}>Continue</button>
-        </div>
-      );
-    } else if (num === 2 || num === 4 || num === 7 || num === 9) {
-      let videoPath = '';
-      if (num === 2) videoPath = '/box/2.mp4';
-      if (num === 4) videoPath = '/box/4.mp4';
-      if (num === 7) videoPath = '/box/7.mp4';
-      if (num === 9) videoPath = '/box/9.mp4';
-
-      return (
-        <div>
-          <div>🎥 It's Your Video</div>
-          <video
-            ref={currentVideoRef}
-            src={videoPath}
-            controls
-            autoPlay
-            onPlay={() => bgMusicRef.current && bgMusicRef.current.pause()}
-            onEnded={() => bgMusicRef.current && bgMusicRef.current.play()}
-          />
-          <button className="next-btn" onClick={(e) => { e.stopPropagation(); closeBox(); }}>Continue</button>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <div>🎉 {num}</div>
-          <div className="big-text">You mean a lot to me ❤️</div>
-          <button className="next-btn" onClick={(e) => { e.stopPropagation(); closeBox(); }}>Continue</button>
-        </div>
-      );
-    }
-  };
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (loginName.trim().toLowerCase() === 'sananda' && loginDOB === '20/01/1999') {
-      setIsLoggedIn(true);
-      setUsername(loginName);
-      localStorage.setItem("name", loginName);
-      setLoginError('');
-    } else {
-      setLoginError('Invalid credentials. Access denied!');
-      // Add some "hardcore" security measures
-      setTimeout(() => {
-        setLoginName('');
-        setLoginDOB('');
-      }, 1000);
-    }
-  };
 
   useEffect(() => {
     document.addEventListener("touchstart", handleTouchStart, { passive: false });
@@ -208,56 +131,81 @@ function App() {
     };
   }, [handleTouchStart, handleTouchMove, handleTouchEnd]);
 
+  // ---------- CONTENT ----------
+  const renderBoxContent = (num) => {
+    const images = {
+      1: "/box/1.jpg",
+      3: "/box/3.png",
+      5: "/box/5.jpg",
+      6: "/box/6.jpg",
+      8: "/box/8.png"
+    };
+
+    const videos = {
+      2: "/box/2.mp4",
+      4: "/box/4.mp4",
+      7: "/box/7.mp4",
+      9: "/box/9.mp4"
+    };
+
+    if (images[num]) {
+      return (
+        <div className="box-content">
+          <h3>Pupu Mota Kutu Lutu Happy Birthday 🎁</h3>
+          <img src={images[num]} className="pinch-img" alt={`Box ${num}`} />
+          <button className="next-btn" onClick={closeBox}>Continue</button>
+        </div>
+      );
+    }
+
+    if (videos[num]) {
+      return (
+        <div className="box-content">
+          <h3>🎥 Special Video</h3>
+          <video
+            ref={currentVideoRef}
+            src={videos[num]}
+            controls
+            autoPlay
+            onPlay={() => bgMusicRef.current?.pause()}
+            onEnded={() => bgMusicRef.current?.play()}
+          />
+          <button className="next-btn" onClick={closeBox}>Continue</button>
+        </div>
+      );
+    }
+  };
+
+  // ---------- LOGIN ----------
   if (!isLoggedIn) {
     return (
-      <div className="App login-screen">
-        <div className="login-container">
-          <h1 className="login-title">🎂 Birthday Surprise 🎂</h1>
-          <p className="login-subtitle">Enter your credentials to access the surprise</p>
-          <form onSubmit={handleLogin} className="login-form">
-            <div className="input-group">
-              <label htmlFor="name">Name:</label>
-              <input
-                type="text"
-                id="name"
-                value={loginName}
-                onChange={(e) => setLoginName(e.target.value)}
-                placeholder="Enter your name"
-                required
-              />
-            </div>
-            <div className="input-group">
-              <label htmlFor="dob">Date of Birth:</label>
-              <input
-                type="text"
-                id="dob"
-                value={loginDOB}
-                onChange={(e) => setLoginDOB(e.target.value)}
-                placeholder="DD/MM/YYYY"
-                required
-              />
-            </div>
-            {loginError && <div className="error-message">{loginError}</div>}
-            <button type="submit" className="login-btn">Access Surprise</button>
-          </form>
-        </div>
+      <div className="login-screen">
+        <form className="login-box" onSubmit={(e) => {
+          e.preventDefault();
+          if (loginName.toLowerCase() === "sananda" && loginDOB === "20/01/1999") {
+            setIsLoggedIn(true);
+            setUsername(loginName);
+            localStorage.setItem("name", loginName);
+          } else {
+            setLoginError("Invalid credentials");
+          }
+        }}>
+          <h2>🎂 Birthday Surprise 🎂</h2>
+          <input placeholder="Name" value={loginName} onChange={e => setLoginName(e.target.value)} />
+          <input placeholder="DD/MM/YYYY" value={loginDOB} onChange={e => setLoginDOB(e.target.value)} />
+          {loginError && <p className="error">{loginError}</p>}
+          <button>Access Surprise</button>
+        </form>
       </div>
     );
   }
 
   return (
     <div className="App" onClick={startMusic}>
-      <audio ref={bgMusicRef} loop>
-        <source src="/music/birthday-music.mp3" type="audio/mpeg" />
-      </audio>
+      <audio ref={bgMusicRef} loop src="/music/birthday-music.mp3" />
 
-      <h2 className="birthday-text">
-        Happy Birthday <span id="username">{username}</span>
-      </h2>
-
-      <p className="instruction-text">
-        Open surprise Box one by one
-      </p>
+      <h2>Happy Birthday {username} 🎉</h2>
+      <p>Open surprise boxes one by one</p>
 
       <div className="grid">
         {[1,2,3,4,5,6,7,8,9].map(num => (
@@ -271,18 +219,10 @@ function App() {
         ))}
       </div>
 
-      <div className={`overlay ${showOverlay ? '' : 'hidden'}`}></div>
+      <div className={`overlay ${showOverlay ? '' : 'hidden'}`} />
 
-      {confettiElements.map(confetti => (
-        <div
-          key={confetti.id}
-          className="confetti"
-          style={{
-            left: confetti.left,
-            background: confetti.background,
-            animationDuration: confetti.animationDuration
-          }}
-        />
+      {confettiElements.map(c => (
+        <div key={c.id} className="confetti" style={c} />
       ))}
     </div>
   );
