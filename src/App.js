@@ -12,6 +12,7 @@ function App() {
   const [username, setUsername] = useState('Sananda');
   const [showOverlay, setShowOverlay] = useState(false);
   const [confettiElements, setConfettiElements] = useState([]);
+  const [showIntro, setShowIntro] = useState(true);
 
   const bgMusicRef = useRef(null);
   const currentVideoRef = useRef(null);
@@ -196,6 +197,55 @@ function App() {
           {loginError && <p className="error">{loginError}</p>}
           <button>Access Surprise</button>
         </form>
+      </div>
+    );
+  }
+
+  // ---------- INTRO SCREEN ----------
+  if (showIntro) {
+    return (
+      <div className="App intro-screen" onClick={startMusic}>
+        <audio ref={bgMusicRef} loop src="/music/birthday-music.mp3" />
+        
+        <div className="intro-container">
+          <div className="intro-content">
+            <div className="hearts-animation">
+              <span className="heart">💝</span>
+              <span className="heart">💕</span>
+              <span className="heart">💖</span>
+            </div>
+            
+            <h1 className="intro-title">Happy Birthday</h1>
+            <h2 className="intro-name">{username}</h2>
+            
+            <p className="intro-text">
+              I have something special prepared just for you...
+            </p>
+            
+            <div className="intro-divider"></div>
+            
+            <p className="intro-subtitle">
+              Open 9 surprise boxes to discover all the love and memories we share
+            </p>
+            
+            <button 
+              className="intro-btn"
+              onClick={() => {
+                startMusic();
+                setShowIntro(false);
+              }}
+            >
+              <span>Begin the Surprise</span>
+              <span className="arrow">→</span>
+            </button>
+            
+            <div className="floating-elements">
+              <div className="float-item">✨</div>
+              <div className="float-item">💫</div>
+              <div className="float-item">🌟</div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
