@@ -10,14 +10,16 @@ function App() {
   const [activeBox, setActiveBox] = useState(null);
   const [musicStarted, setMusicStarted] = useState(false);
   const [username, setUsername] = useState('Sananda');
-  const [showOverlay, setShowOverlay] = useState(false);
   const [confettiElements, setConfettiElements] = useState([]);
   const [showIntro, setShowIntro] = useState(true);
 
   const bgMusicRef = useRef(null);
   const currentVideoRef = useRef(null);
 
-  // Pinch zoom states
+  // 🔥 DERIVED STATE (NO LOGIC CHANGE)
+  const isModalOpen = activeBox !== null;
+
+  // ---------------- PINCH ZOOM STATES ----------------
   const [initialDistance, setInitialDistance] = useState(0);
   const [currentScale, setCurrentScale] = useState(1);
   const [translateX, setTranslateX] = useState(0);
@@ -42,11 +44,9 @@ function App() {
     if (num !== currentBox) return;
     startMusic();
     setActiveBox(num);
-    setShowOverlay(true);
   };
 
   const closeBox = () => {
-    setShowOverlay(false);
     createConfetti();
 
     if (currentVideoRef.current && !currentVideoRef.current.ended) {
@@ -54,7 +54,7 @@ function App() {
       currentVideoRef.current = null;
     }
 
-    setCurrentBox(currentBox + 1);
+    setCurrentBox(prev => prev + 1);
     setActiveBox(null);
   };
 
@@ -72,7 +72,7 @@ function App() {
     setTimeout(() => setConfettiElements([]), 4000);
   };
 
-  // ---------- PINCH ZOOM ----------
+  // ---------------- PINCH ZOOM HANDLERS ----------------
   const getDistance = (t1, t2) =>
     Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
 
@@ -132,7 +132,7 @@ function App() {
     };
   }, [handleTouchStart, handleTouchMove, handleTouchEnd]);
 
-  // ---------- CONTENT ----------
+  // ---------------- CONTENT ----------------
   const renderBoxContent = (num) => {
     const images = {
       1: "/box/1.jpg",
@@ -177,7 +177,7 @@ function App() {
     }
   };
 
-  // ---------- LOGIN ----------
+  // ---------------- LOGIN ----------------
   if (!isLoggedIn) {
     return (
       <div className="login-screen">
@@ -201,75 +201,56 @@ function App() {
     );
   }
 
-  // ---------- INTRO SCREEN ----------
+  // ---------------- INTRO ----------------
   if (showIntro) {
     return (
       <div className="App intro-screen" onClick={startMusic}>
         <audio ref={bgMusicRef} loop src="/music/birthday-music.mp3" />
-        
         <div className="intro-container">
           <div className="intro-content">
-            <div className="hearts-animation">
-              <span className="heart">💝</span>
-              <span className="heart">💕</span>
-              <span className="heart">💖</span>
-            </div>
-            
             <h1 className="intro-title">Happy Birthday</h1>
             <h2 className="intro-name">{username}</h2>
-            
-            <p className="intro-text">
-              I have something special prepared just for you...
-            </p>
-            
-            <div className="intro-divider"></div>
-            
-            <p className="intro-subtitle">
-              Open 9 surprise boxes to discover all the love and memories we share
-            </p>
-            
-            <button 
-              className="intro-btn"
-              onClick={() => {
-                startMusic();
-                setShowIntro(false);
-              }}
-            >
-              <span>Begin the Surprise</span>
-              <span className="arrow">→</span>
+            <button className="intro-btn" onClick={() => setShowIntro(false)}>
+              Begin the Surprise →
             </button>
-            
-            <div className="floating-elements">
-              <div className="float-item">✨</div>
-              <div className="float-item">💫</div>
-              <div className="float-item">🌟</div>
-            </div>
           </div>
         </div>
       </div>
     );
   }
 
+  // ---------------- MAIN ----------------
   return (
     <div className="App" onClick={startMusic}>
       <audio ref={bgMusicRef} loop src="/music/birthday-music.mp3" />
 
-      <h2>Happy Birthday {username} 🎉</h2>
-      <p>Open surprise boxes one by one</p>
+      {!isModalOpen && (
+        <>
+          <h2>Happy Birthday {username} 🎉</h2>
+          <p>Open surprise boxes one by one</p>
 
-      <div className="grid">
-        {[1,2,3,4,5,6,7,8,9].map(num => (
-          <div
-            key={num}
-            className={`box ${num === currentBox ? 'active' : ''} ${activeBox === num ? 'expand' : ''}`}
-            onClick={() => openBox(num)}
-          >
-            {activeBox === num ? renderBoxContent(num) : num}
+          <div className="grid">
+            {[1,2,3,4,5,6,7,8,9].map(num => (
+              <div
+                key={num}
+                className={`box ${num === currentBox ? 'active' : ''}`}
+                onClick={() => openBox(num)}
+              >
+                {num}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
 
-      <div className={`overlay ${showOverlay ? '' : 'hidden'}`} />
+      {isModalOpen && (
+        <>
+          <div className="overlay" onClick={closeBox}></div>
+          <div className="box expand">
+            {renderBoxContent(activeBox)}
+          </div>
+        </>
+      )}
 
       {confettiElements.map(c => (
         <div key={c.id} className="confetti" style={c} />

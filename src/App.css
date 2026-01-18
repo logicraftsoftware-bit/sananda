@@ -1,4 +1,4 @@
-/* Modern Reset and Base Styles */
+/* ================= RESET ================= */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -7,226 +7,26 @@
 
 html, body {
     height: 100%;
-    overflow: hidden;
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
 }
 
-/* Modern Background with Animated Gradient */
+/* Lock scroll when modal open */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* ================= APP BACKGROUND ================= */
 .App {
     background: linear-gradient(-45deg, #ff6b9d, #c44569, #f093fb, #f5576c, #4facfe, #00f2fe);
     background-size: 400% 400%;
     animation: gradientShift 15s ease infinite;
-    height: 100svh;
+    min-height: 100vh;
     text-align: center;
     position: relative;
     overflow: hidden;
 }
 
-.App::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
-    pointer-events: none;
-}
-
-/* ========== INTRO SCREEN STYLES ========== */
-.intro-screen {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.intro-container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    z-index: 2;
-}
-
-.intro-content {
-    text-align: center;
-    max-width: 500px;
-    padding: 3rem 2rem;
-    position: relative;
-    z-index: 3;
-}
-
-.hearts-animation {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-    animation: heartBounce 1.5s ease-in-out infinite;
-}
-
-.hearts-animation .heart {
-    font-size: 3.5rem;
-    animation: float 3s ease-in-out infinite;
-}
-
-.hearts-animation .heart:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.hearts-animation .heart:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
-.intro-title {
-    font-size: clamp(2.5rem, 10vw, 4.5rem);
-    font-weight: 700;
-    background: linear-gradient(45deg, #ff6b9d, #4ecdc4, #45b7d1);
-    background-size: 300% 300%;
-    animation: titleGlow 3s ease infinite;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 0.5rem;
-    letter-spacing: -1px;
-}
-
-.intro-name {
-    font-size: clamp(2rem, 8vw, 3.5rem);
-    font-weight: 800;
-    background: linear-gradient(135deg, #ff9ff3, #f368e0, #a8e6cf);
-    background-size: 300% 300%;
-    animation: nameShine 4s ease infinite;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 2rem;
-}
-
-.intro-text {
-    font-size: 1.3rem;
-    color: white;
-    margin: 1.5rem 0;
-    font-weight: 500;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    line-height: 1.6;
-    letter-spacing: 0.5px;
-}
-
-.intro-divider {
-    width: 60px;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, white, transparent);
-    margin: 2rem auto;
-    border-radius: 2px;
-}
-
-.intro-subtitle {
-    font-size: 1.05rem;
-    color: rgba(255,255,255,0.95);
-    margin: 1.5rem 0 2.5rem 0;
-    line-height: 1.7;
-    font-weight: 400;
-}
-
-.intro-btn {
-    padding: 1.2rem 3rem;
-    border: none;
-    border-radius: 50px;
-    background: linear-gradient(45deg, #ff6b9d, #4ecdc4, #45b7d1, #f9ca24);
-    background-size: 300% 300%;
-    animation: buttonShine 3s ease infinite;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 10px 40px rgba(255, 107, 157, 0.4),
-                0 0 20px rgba(255, 107, 157, 0.2);
-    position: relative;
-    overflow: hidden;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.8rem;
-    margin-top: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.intro-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.intro-btn:hover::before {
-    left: 100%;
-}
-
-.intro-btn:hover {
-    transform: translateY(-4px) scale(1.05);
-    box-shadow: 0 15px 50px rgba(255, 107, 157, 0.5),
-                0 0 30px rgba(255, 107, 157, 0.3);
-}
-
-.intro-btn:active {
-    transform: translateY(-2px) scale(1.02);
-}
-
-.arrow {
-    font-size: 1.4rem;
-    transition: transform 0.3s ease;
-}
-
-.intro-btn:hover .arrow {
-    transform: translateX(5px);
-}
-
-.floating-elements {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-}
-
-.float-item {
-    position: absolute;
-    font-size: 2.5rem;
-    opacity: 0.7;
-    animation: float 6s ease-in-out infinite;
-}
-
-.float-item:nth-child(1) {
-    top: 15%;
-    left: 10%;
-    animation-delay: 0s;
-}
-
-.float-item:nth-child(2) {
-    top: 60%;
-    right: 15%;
-    animation-delay: 1s;
-}
-
-.float-item:nth-child(3) {
-    top: 40%;
-    right: 5%;
-    animation-delay: 2s;
-}
-
-/* ========== MAIN APP STYLES ========== */
-
-/* Modern Typography */
+/* ================= HEADINGS ================= */
 .App h2 {
     font-size: clamp(2.5rem, 10vw, 4rem);
     background: linear-gradient(45deg, #ff6b9d, #4ecdc4, #45b7d1, #f9ca24);
@@ -234,37 +34,20 @@ html, body {
     animation: textGradient 3s ease infinite;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: 2px;
     margin-top: 2rem;
-    margin-bottom: 0.5rem;
-    position: relative;
-    z-index: 2;
-    pointer-events: none;
-}
-
-.overlay:not(.hidden) ~ .App h2,
-.overlay:not(.hidden) ~ .App p {
-    display: none;
 }
 
 .App p {
     background: rgba(255,255,255,0.98);
-    border: 1px solid rgba(255,255,255,0.35);
     border-radius: 30px;
     padding: 0.9rem 2rem;
     margin: 1rem auto;
     max-width: 350px;
     color: #2d3748;
-    font-size: clamp(1rem, 3vw, 1.2rem);
     font-weight: 600;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-    position: relative;
-    z-index: 2;
-    letter-spacing: 0.5px;
 }
 
-/* Modern Grid Layout */
+/* ================= GRID ================= */
 .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -272,298 +55,97 @@ html, body {
     padding: 2rem 1.5rem;
     max-width: 420px;
     margin: 0 auto;
-    position: relative;
-    z-index: 2;
 }
 
-/* Modern Box Design */
+/* ================= BOX ================= */
 .box {
     background: rgba(255,255,255,0.95);
-    border: 2px solid rgba(255,255,255,0.3);
     height: 120px;
     border-radius: 28px;
-    color: #2d3748;
     font-size: 2.5rem;
     font-weight: 800;
     display: flex;
-    justify-content: center;
     align-items: center;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.1),
-                inset 0 1px 0 rgba(255,255,255,0.4);
+    justify-content: center;
     opacity: 0.5;
     pointer-events: none;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-}
-
-.box::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
-    transition: left 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.box:hover::before {
-    left: 100%;
+    transition: all 0.4s ease;
 }
 
 .box.active {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.15),
-                0 0 0 4px rgba(255, 107, 157, 0.4),
-                inset 0 1px 0 rgba(255,255,255,0.5);
     animation: modernGlow 2.5s ease-in-out infinite;
-    background: linear-gradient(135deg, rgba(255,182,193,0.95), rgba(255,218,221,0.85));
 }
 
-/* Modern Expanded Box */
+/* ================= EXPANDED BOX (MODAL) ================= */
 .box.expand {
     position: fixed;
     inset: 2rem;
-    width: auto;
-    height: auto;
-    transform: scale(1);
-    z-index: 100;
-    font-size: 1.2rem;
-    flex-direction: column;
-    padding: 2.5rem;
-    background: white;
-    border: 1.5px solid rgba(200,200,200,0.3);
+    background: #fff;
+    z-index: 1000;
     border-radius: 36px;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
-    animation: expandIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow-y: auto;
-    align-items: center;
-    color: #2d3748;
-    max-height: 90vh;
-}
-
-.box-content {
+    padding: 2.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
-    gap: 1.5rem;
+    overflow-y: auto;
+    animation: expandIn 0.4s ease;
 }
 
-.box.expand h3 {
-    background: linear-gradient(45deg, #ff6b9d, #4ecdc4, #45b7d1);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    text-align: center;
-}
-
-.box.expand img {
-    width: 100%;
-    max-width: 450px;
-    max-height: 60vh;
-    object-fit: contain;
-    margin: 1rem auto;
-    border-radius: 24px;
-    touch-action: none;
-    transform-origin: center center;
-    transition: transform 0.1s ease;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-    border: 2px solid rgba(255,107,157,0.15);
-}
-
+.box.expand img,
 .box.expand video {
-    width: 100%;
-    max-width: 450px;
+    max-width: 100%;
     max-height: 60vh;
-    object-fit: contain;
-    margin: 1rem auto;
     border-radius: 24px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-    border: 2px solid rgba(255,107,157,0.15);
+    margin: 1rem 0;
 }
 
-/* Modern Button */
+/* ================= NEXT BUTTON ================= */
 .next-btn {
     margin-top: 2rem;
     padding: 1.1rem 3rem;
     border: none;
     border-radius: 50px;
     background: linear-gradient(45deg, #ff6b9d, #4ecdc4, #45b7d1);
-    background-size: 200% 200%;
-    animation: buttonGlow 3s ease infinite;
     color: white;
     font-size: 1.1rem;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.35);
-    position: relative;
-    overflow: hidden;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
 }
 
-.next-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-    transition: left 0.6s;
-}
-
-.next-btn:hover::before {
-    left: 100%;
-}
-
-.next-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(255, 107, 157, 0.45);
-}
-
-/* Modern Overlay */
+/* ================= OVERLAY (FIXED) ================= */
 .overlay {
     position: fixed;
     inset: 0;
-    background: transparent;
-    display: block;
-    z-index: 99;
-    animation: fadeIn 0.3s ease;
-    pointer-events: none;
+    background: rgba(0,0,0,0.35);
+    z-index: 900;
+    pointer-events: auto;
 }
 
 .overlay.hidden {
     display: none;
 }
 
-/* Hide background when overlay is visible */
+/* 🔥 IMPORTANT FIX — REMOVE BACKGROUND CONTENT */
 .overlay:not(.hidden) ~ .App h2,
 .overlay:not(.hidden) ~ .App p,
 .overlay:not(.hidden) ~ .grid {
-    visibility: hidden;
+    display: none;
 }
 
-/* Modern Confetti */
+/* ================= CONFETTI ================= */
 .confetti {
     position: fixed;
     width: 14px;
     height: 14px;
     top: -10px;
     animation: modernFall 4s linear infinite;
-    z-index: 60;
-    border-radius: 50%;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    z-index: 800;
 }
 
-/* Modern Pinch Zoom Image */
-.pinch-img {
-    width: 100%;
-    max-width: 450px;
-    max-height: 60vh;
-    object-fit: contain;
-    margin: 1rem auto;
-    border-radius: 24px;
-    touch-action: none;
-    transform-origin: center center;
-    transition: transform 0.1s ease;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-    border: 2px solid rgba(255,107,157,0.15);
-    display: block;
-}
-
-/* Login Screen Styles */
-.login-screen {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-}
-
-.login-box {
-    background: white;
-    border-radius: 28px;
-    padding: 3.5rem 2.5rem;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-    max-width: 420px;
-    width: 100%;
-    text-align: center;
-    border: 1.5px solid rgba(255, 255, 255, 0.3);
-}
-
-.login-box h2 {
-    font-size: 2.8rem;
-    color: #2d3748;
-    margin-bottom: 1.5rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.login-box input {
-    width: 100%;
-    padding: 1.1rem 1.5rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 16px;
-    font-size: 1rem;
-    margin-bottom: 1.3rem;
-    transition: all 0.3s ease;
-    box-sizing: border-box;
-    background: rgba(255,255,255,0.8);
-}
-
-.login-box input:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-    background: white;
-}
-
-.login-box button {
-    width: 100%;
-    padding: 1.2rem;
-    background: linear-gradient(45deg, #667eea, #764ba2);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 0.8rem;
-}
-
-.login-box button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.45);
-}
-
-.login-box .error {
-    color: #e74c3c;
-    background: #ffe8e8;
-    padding: 1rem;
-    border-radius: 12px;
-    border: 1.5px solid #f5a9a9;
-    margin-bottom: 1rem;
-    font-weight: 600;
-    animation: shake 0.4s ease-in-out;
-}
-
-/* ========== ANIMATIONS ========== */
-
+/* ================= ANIMATIONS ================= */
 @keyframes gradientShift {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
@@ -571,223 +153,61 @@ html, body {
 }
 
 @keyframes textGradient {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-}
-
-@keyframes titleGlow {
-    0%, 100% { filter: drop-shadow(0 0 15px rgba(255, 107, 157, 0.3)); }
-    50% { filter: drop-shadow(0 0 25px rgba(78, 205, 196, 0.4)); }
-}
-
-@keyframes nameShine {
-    0%, 100% { filter: brightness(1); }
-    50% { filter: brightness(1.15); }
-}
-
-@keyframes modernGlow {
-    0%, 100% {
-        transform: translateY(-6px) scale(1);
-        box-shadow: 0 20px 50px rgba(0,0,0,0.15), 0 0 0 4px rgba(255, 107, 157, 0.4);
-    }
-    50% {
-        transform: translateY(-10px) scale(1.06);
-        box-shadow: 0 25px 60px rgba(0,0,0,0.2), 0 0 0 6px rgba(255, 107, 157, 0.6);
-    }
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
 }
 
 @keyframes expandIn {
-    0% {
+    from {
         opacity: 0;
-        transform: scale(0.85) translateY(20px);
+        transform: scale(0.9);
     }
-    100% {
+    to {
         opacity: 1;
-        transform: scale(1) translateY(0);
+        transform: scale(1);
     }
 }
 
-@keyframes buttonGlow {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-}
-
-@keyframes buttonShine {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-}
-
-@keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+@keyframes modernGlow {
+    0%,100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 4px rgba(255,107,157,0.4);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 6px rgba(255,107,157,0.6);
+    }
 }
 
 @keyframes modernFall {
-    0% {
-        transform: translateY(-10px) rotate(0deg);
-        opacity: 1;
+    from {
+        transform: translateY(-10px) rotate(0);
     }
-    100% {
+    to {
         transform: translateY(100vh) rotate(720deg);
-        opacity: 0;
     }
 }
 
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0) rotate(0deg);
-    }
-    50% {
-        transform: translateY(-20px) rotate(5deg);
-    }
-}
-
-@keyframes heartBounce {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-}
-
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
-}
-
-/* Responsive Design */
+/* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
-    .grid {
-        gap: 1rem;
-        padding: 1.5rem 1rem;
-        max-width: 340px;
-    }
-
     .box {
         height: 100px;
         font-size: 2rem;
-    }
-
-    .App h2 {
-        font-size: clamp(2rem, 8vw, 3rem);
-        margin-top: 1.5rem;
-    }
-
-    .intro-title {
-        font-size: clamp(2rem, 8vw, 3.5rem);
-    }
-
-    .intro-name {
-        font-size: clamp(1.6rem, 6vw, 2.8rem);
-    }
-
-    .intro-text {
-        font-size: 1.1rem;
     }
 
     .box.expand {
         inset: 1rem;
         padding: 1.5rem;
     }
-
-    .login-box {
-        padding: 2rem 1.5rem;
-    }
-
-    .login-box h2 {
-        font-size: 2.2rem;
-    }
 }
 
 @media (max-width: 480px) {
-    .grid {
-        gap: 0.8rem;
-        padding: 1rem;
-        max-width: 300px;
-    }
-
     .box {
         height: 85px;
-        font-size: 1.8rem;
-        border-radius: 20px;
+        font-size: 1.7rem;
     }
 
-    .App h2 {
-        font-size: clamp(1.8rem, 6vw, 2.5rem);
-        margin-top: 1rem;
-    }
-
-    .App p {
-        font-size: 0.95rem;
-        padding: 0.7rem 1.5rem;
-    }
-
-    .intro-content {
-        padding: 2rem 1rem;
-    }
-
-    .intro-title {
-        font-size: clamp(1.8rem, 6vw, 3rem);
-    }
-
-    .intro-name {
-        font-size: clamp(1.4rem, 5vw, 2.3rem);
-        margin-bottom: 1.5rem;
-    }
-
-    .intro-text {
-        font-size: 1rem;
-    }
-
-    .hearts-animation {
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .hearts-animation .heart {
-        font-size: 2.5rem;
-    }
-
-    .intro-btn {
-        padding: 1rem 2.5rem;
-        font-size: 1rem;
-    }
-
-    .float-item {
-        font-size: 2rem;
-    }
-
-    .box.expand {
-        inset: 0.8rem;
-        padding: 1.2rem;
-    }
-
-    .box.expand h3 {
-        font-size: 1.3rem;
-    }
-
-    .box.expand img,
-    .box.expand video {
-        max-width: 100%;
-        margin: 0.8rem auto;
-    }
-
-    .next-btn {
-        padding: 0.9rem 2rem;
-        font-size: 1rem;
-        margin-top: 1.5rem;
-    }
-
-    .login-box {
-        padding: 1.5rem 1.2rem;
-        margin: 1rem;
-    }
-
-    .login-box h2 {
-        font-size: 2rem;
-    }
-
-    .login-box input {
-        padding: 1rem 1.2rem;
-        margin-bottom: 1rem;
-        font-size: 0.95rem;
+    .grid {
+        gap: 0.8rem;
     }
 }
