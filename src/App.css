@@ -326,18 +326,18 @@ html, body {
 /* Modern Expanded Box */
 .box.expand {
     position: fixed;
-    inset: 1.5rem;
+    inset: 2rem;
     width: auto;
     height: auto;
     transform: scale(1);
-    z-index: 150;
+    z-index: 100;
     font-size: 1.2rem;
     flex-direction: column;
     padding: 2.5rem;
     background: white;
     border: 1.5px solid rgba(200,200,200,0.3);
     border-radius: 36px;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
     animation: expandIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-y: auto;
     align-items: center;
@@ -436,15 +436,22 @@ html, body {
 .overlay {
     position: fixed;
     inset: 0;
-    background: transparent;
+    background: rgba(0, 0, 0, 0.6);
     display: block;
-    z-index: 50;
+    z-index: 99;
     animation: fadeIn 0.3s ease;
     pointer-events: none;
 }
 
 .overlay.hidden {
     display: none;
+}
+
+/* Hide background when overlay is visible */
+.overlay:not(.hidden) ~ .App h2,
+.overlay:not(.hidden) ~ .App p,
+.overlay:not(.hidden) ~ .grid {
+    visibility: hidden;
 }
 
 /* Modern Confetti */
